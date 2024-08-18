@@ -54,7 +54,7 @@ static void prompt_fn(char *s)
 // disk already mounted
 static void mount_msg(void)
 {
-  Serial.print(F("Disk already mounted\n"));
+  Serial.println(F("Disk already mounted"));
 }
 
 // configuration dialog for the machine
