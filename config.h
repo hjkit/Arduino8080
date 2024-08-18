@@ -43,12 +43,18 @@ void get_cmdline(char *buf, int len)
   buf[i] = '\0';
 }
 
-// promt for a filename
+// prompt for a filename
 static void prompt_fn(char *s)
 {
-      Serial.print(F("Filename: "));
-      get_cmdline(s, 9);
-      Serial.println();
+  Serial.print(F("Filename: "));
+  get_cmdline(s, 9);
+  Serial.println();
+}
+
+// disk already mounted
+static void mount_msg(void)
+{
+  Serial.print(F("Disk already mounted\n"));
 }
 
 // configuration dialog for the machine
@@ -109,9 +115,14 @@ again:
       prompt_fn(s);
       if (strlen(s) == 0) {
         disks[0][0] = 0x0;
-	Serial.println();
+        Serial.println();
       } else {
         mount_disk(0, s);
+        if (!strcmp(disks[0], disks[1])) {
+          mount_msg();
+          disks[0][0] = 0x0;
+          Serial.println();
+        }
       }
       break;
 
@@ -119,9 +130,14 @@ again:
       prompt_fn(s);
       if (strlen(s) == 0) {
         disks[1][0] = 0x0;
-	Serial.println();
+        Serial.println();
       } else {
         mount_disk(1, s);
+        if (!strcmp(disks[0], disks[1])) {
+          mount_msg();
+          disks[1][0] = 0x0;
+          Serial.println();
+        }
       }
       break;
 

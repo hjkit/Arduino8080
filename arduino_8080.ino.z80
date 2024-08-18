@@ -2580,16 +2580,7 @@ void loop()
   // initialize and configure all virtual hardware
   init_cpu(&cpu_state);
   init_memory();
-  NOPE: config();
-
-  // check if there are disks in the drives
-  if (strlen(disks[0]) != 0) {
-    // they will try this for sure, so ...
-    if (!strcmp(disks[0], disks[1])) {
-      Serial.println(F("Not with this config dude\n"));
-      goto NOPE;
-    }
-  }
+  config();
 
   // run the Z80 CPU with whatever code is in memory
   State = Running;
