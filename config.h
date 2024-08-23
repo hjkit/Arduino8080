@@ -21,7 +21,7 @@ void get_cmdline(char *buf, int len)
   int i = 0;
   char c;
 
-  while (i < len - 1) {
+  for (;;) {
     while (!Serial.available())
       ;
     c = Serial.read();
@@ -33,9 +33,12 @@ void get_cmdline(char *buf, int len)
         i--;
       }
     } else if (c != '\r') {
-      buf[i] = c;
-      Serial.write(c);
-      i++;
+      if (i < len - 1) {
+        buf[i++] = c;
+        Serial.write(c);
+        if (len == 2)
+          break;
+      }
     } else {
       break;
     }
