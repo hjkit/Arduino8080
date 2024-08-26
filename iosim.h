@@ -27,19 +27,16 @@ const static BYTE p000_in(void)
   if (Serial.availableForWrite())   // check if output to tty is possible
     stat &= 0b01111111;             // if so flip status bit
     
-  return (stat);
+  return stat;
 }
 
 // I/O function port 1 read:
 // Read byte from Arduino UART.
 const static BYTE p001_in(void)
 {
-  if (!Serial.available()) // someone reading without checking first
-    return (sio_last);
-  else {
+  if (Serial.available())
     sio_last = Serial.read();
-    return (sio_last);
-  }
+  return sio_last;
 }
 
 // This array contains function pointers for every input
@@ -57,11 +54,11 @@ const static BYTE (*port_in[5]) (void) = {
 BYTE io_in(BYTE addrl, BYTE addrh)
 {
   if ((addrl <= 4) && (*port_in[addrl] != 0)) // for now we use 0-4
-    return ((*port_in[addrl]) ());
+    return (*port_in[addrl])();
   else if (addrl == 255)                      // and 255, frontpanel port
-    return (fp_value);
+    return fp_value;
   else
-    return (0xff);                            // all other return 0xff
+    return 0xff;                              // all other return 0xff
 }
 
 // I/O function port 1 write:

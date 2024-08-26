@@ -76,21 +76,21 @@ void config(void)
   }
 
   while (!go_flag) {
-    Serial.print(F("1 - port 255: 0x"));
+    Serial.print(F("p - port 255: 0x"));
     Serial.println(fp_value, HEX);
-    Serial.println(F("2 - load file"));
-    Serial.print(F("3 - Disk 0: "));
+    Serial.println(F("l - load file"));
+    Serial.print(F("0 - Disk 0: "));
     Serial.println(disks[0]);
-    Serial.print(F("4 - Disk 1: "));
+    Serial.print(F("1 - Disk 1: "));
     Serial.println(disks[1]);
-    Serial.println(F("5 - run machine\n"));
+    Serial.println(F("g - run machine\n"));
     Serial.print(F("Command: "));
 
     get_cmdline(s, 2);
     Serial.println(F("\n"));
 
     switch (*s) {
-    case '1':
+    case 'p':
 again:
       Serial.print(F("Value: "));
       get_cmdline(s, 3);
@@ -109,12 +109,12 @@ again:
                   (*(s + 1) - 'A' + 10);
       break;
 
-    case '2':
+    case 'l':
       prompt_fn(s);
       load_file(s);
       break;
 
-    case '3':
+    case '0':
       prompt_fn(s);
       if (strlen(s) == 0) {
         disks[0][0] = 0x0;
@@ -129,7 +129,7 @@ again:
       }
       break;
 
-    case '4':
+    case '1':
       prompt_fn(s);
       if (strlen(s) == 0) {
         disks[1][0] = 0x0;
@@ -144,7 +144,7 @@ again:
       }
       break;
 
-    case '5':
+    case 'g':
       go_flag = 1;
       break;
 
